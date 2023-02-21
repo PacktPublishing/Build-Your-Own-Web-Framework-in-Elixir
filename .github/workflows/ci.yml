@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    if: "! contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - run: echo "${{ github.event.head_commit.message }}"
+
+  chapter-1-build-and-compile:
+    name: Build & Compile
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Elixir
+      uses: erlef/setup-beam@v1
+      with:
+        elixir-version: '1.14.3'
+        otp-version: '25.2'
+    - name: Restore dependencies cache
+      uses: actions/cache@v2
+      with:
+        path: chapter_1/cowboy_example/deps
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-
+    - name: Install dependencies
+      working-directory: chapter_1/cowboy_example
+      run: mix deps.get
+    - name: Compilation
+      working-directory: chapter_1/cowboy_example
+      run: mix compile --all-warnings --warnings-as-errors
+
+  chapter-1-test:
+    name: Tests
+    runs-on: ubuntu-latest
+    needs: prepare
+    env:
+      MIX_ENV: test
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Elixir
+      uses: erlef/setup-beam@v1
+      with:
+        elixir-version: '1.14.3'
+        otp-version: '25.2'
+    - name: Restore dependencies cache
+      uses: actions/cache@v2
+      with:
+        path: chapter_1/cowboy_example/deps
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-
+    - name: Install dependencies
+      working-directory: chapter_1/cowboy_example
+      run: mix deps.get
+    - name: Test
+      working-directory: chapter_1/cowboy_example
+      run: mix test
