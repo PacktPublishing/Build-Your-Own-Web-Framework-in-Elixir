@@ -1,0 +1,2 @@
+<% IO.puts "This function was called with #{a} and #{b}" %>
+<%= a + b %>
