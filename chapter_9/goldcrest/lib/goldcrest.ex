@@ -1,0 +1,2 @@
+defmodule Goldcrest do
+end
