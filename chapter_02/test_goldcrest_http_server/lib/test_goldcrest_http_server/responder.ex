@@ -8,6 +8,14 @@ defmodule TestGoldcrestHTTPServer.Responder do
         |> put_header("Content-type", "text/html")
         |> put_status(200)
 
+      method == :GET && path == "/long-operation" ->
+        # sleep for 5 seconds
+        :timer.sleep(5000)
+
+        http_response("Hello World LONG LONG")
+        |> put_header("Content-type", "text/html")
+        |> put_status(200)
+
       true ->
         http_response("Not Found")
         |> put_header("Content-type", "text/html")
