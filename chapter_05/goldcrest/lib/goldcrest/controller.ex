@@ -8,7 +8,7 @@ defmodule Goldcrest.Controller do
   def render(conn, :json, data) when is_map(data) do
     conn
     |> content_type("application/json")
-    |> send_resp(200, Jason.encode!(data))
+    |> send_resp(conn.status || 200, Jason.encode!(data))
   end
 
   def render(conn, :json, data) when is_binary(data) do
