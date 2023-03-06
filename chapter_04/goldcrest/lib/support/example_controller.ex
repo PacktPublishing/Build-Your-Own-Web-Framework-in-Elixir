@@ -13,16 +13,6 @@ defmodule Goldcrest.ExampleController do
   end
 
   def redirect_greet(conn, params) do
-    case validate_params(params) do
-      :ok ->
-        conn
-        |> redirect(to: "/greet")
-
-      other ->
-        other
-    end
+    conn |> redirect(to: "/greet")
   end
-
-  defp validate_params(%{"greet" => "true"}), do: :ok
-  defp validate_params(_), do: {:error, :bad_params}
 end
