@@ -24,6 +24,8 @@ defmodule Plug.Goldcrest.HTTPServer do
     {:ok, {remote_ip, _}} = :inet.sockname(req)
     %URI{path: path, query: qs} = URI.parse(path)
 
+    qs = qs || ""
+
     %Plug.Conn{
       adapter: {@adapter, {req, method, path}},
       host: nil,

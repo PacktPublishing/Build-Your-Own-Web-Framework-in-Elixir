@@ -28,6 +28,8 @@ defmodule Plug.Goldcrest.HTTPServer do
 
     %URI{path: path, query: qs} = URI.parse(path)
 
+    qs = qs || ""
+
     path_info =
       if path == "/" do
         [path]
