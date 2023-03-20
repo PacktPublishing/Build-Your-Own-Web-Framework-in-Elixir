@@ -1,6 +1,10 @@
 defmodule Goldcrest.ExampleRouter do
   use Plug.Router
 
+  plug Plug.Parsers,
+    parsers: [:html],
+    pass:  ["text/html"]
+
   plug(:match)
   plug(:dispatch)
 
